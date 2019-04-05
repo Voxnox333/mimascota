@@ -63,11 +63,7 @@ Envia un objeto error en el callback  para ser lanzado interrumpiendo o solo pro
 
 # API Documentation
 
-
-{{base}} -> localhost:3000/api/v1
-
-
-## Authorization
+{{base}} --> localhost:3000/api/v1
 
 **Headers**
 
@@ -76,8 +72,9 @@ Content-Type:application/json
 Authorization: Bearer {{TOKEN}}
 ```
 
+## Authorization
 
-**POST**  {{url}}/login
+**POST**  {{base}}/login
 
 Request
 
