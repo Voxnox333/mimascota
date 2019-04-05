@@ -39,13 +39,23 @@ Ouput example:
 | 2019 |  02   |   1         | $1900 |
 | 2019 |  03   |   1         | $900  |
 
+```mysql
+
+SET sql_mode = '';
+SELECT EXTRACT(YEAR FROM created) as "year" , EXTRACT(MONTH FROM created) as "month", count(*) as "reservation" ,SUM(price) as "total" from sales GROUP BY YEAR(created), MONTH(created) ORDER BY created;
+
+```
+
 
 3) ### What are the differences between? ###
 
 ```throw new Error('something bad happened');```
-
+```
 Lanza un objeto error interrupiendo el proceso.
+```
 
 ```callback(new Error('something bad happened'));```
 
-Envia un objeto error en el callback  sin interrumpir, esto es muy usuado en procesos asincronicos para tomar el error y no romper con lineas de proceso.
+```
+Envia un objeto error en el callback  para ser lanzado o solo procesado sin interrumpir, esto es muy usuado en procesos asincronicos para tomar el error y no romper con lineas de proceso.
+```
