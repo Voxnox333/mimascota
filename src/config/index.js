@@ -23,7 +23,10 @@ const config = {
     name: process.env.DB_NAME,
     username: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD
-  }
+  },
+  secret: '1ekd0y38qs0bqhy8qs67',
+  api_path:'/api/v1',
+  tokenexpire: '24h'
 };
 
 export default config;

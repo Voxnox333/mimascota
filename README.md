@@ -57,5 +57,46 @@ Lanza un objeto error interrupiendo el proceso.
 ```callback(new Error('something bad happened'));```
 
 ```
-Envia un objeto error en el callback  para ser lanzado o solo procesado sin interrumpir, esto es muy usuado en procesos asincronicos para tomar el error y no romper con lineas de proceso.
+Envia un objeto error en el callback  para ser lanzado interrumpiendo o solo procesar el error sin interrumpir, esto es muy usuado en procesos asincronicos para tomar el error y no romper con lineas de proceso como una excepción.
+```
+
+
+# API Documentation
+
+
+{{base}} -> localhost:3000/api/v1
+
+
+## Authorization
+
+**Headers**
+
+```
+Content-Type:application/json
+Authorization: Bearer {{TOKEN}}
+```
+
+
+**POST**  {{url}}/login
+
+Request
+
+```
+{
+  "name":"Chuck",
+  "email":"chuck@mail.com"
+}
+```
+
+Response 
+```
+{
+    "success": true,
+    "token": "...",
+    "user": {
+        "id": 1,
+        "name": "Chuck",
+        "email": "chuck@mail.com"
+    }
+}
 ```
