@@ -9,8 +9,8 @@ const router = new Router({
 
 router.use([Auth.session,Auth.isauthorized]);
 
-
 router.post('/',UserCtrl.create);
+router.put('/:id/',UserCtrl.update);
 
 // User router
 const routes = router.routes();
