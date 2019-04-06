@@ -1,12 +1,16 @@
 import rules from '../validators/user';
 import validutil from '../validators/util';
 
-const user = {
-
+const User = {
+    validpropety:(ctx)=>{
+        if(ctx.state.user.id != ctx.params.id){
+            //ctx.throw(400,"You dont have access to this user");
+        }
+    },
    create:async(ctx)=>{
 
         // Validate
-        await validutil.validate(ctx,rules.user);
+        await validutil.validate(ctx,rules.user,"body");
        
         const data = ctx.request.body;
         const dUser = {
@@ -34,7 +38,9 @@ const user = {
    update:async(ctx)=>{
 
         // Validate
-        await validutil.validate(ctx,rules.user);
+        await validutil.validate(ctx,rules.id,"params");
+        await validutil.validate(ctx,rules.user,"body");
+
         const data = ctx.request.body;
         const dUser = {
             name: data.name,
@@ -42,11 +48,7 @@ const user = {
             birthday: data.birthday
         };
         
-
-        if(ctx.state.user.id != ctx.params.id){
-            ctx.throw(400,"Cannot update this user");
-        }
-
+        await User.validpropety(ctx);
         const ModelUser = ctx.orm().user;
         let user = await ModelUser.findOne({where: { id: parseInt( ctx.params.id ) }});
 
@@ -71,6 +73,7 @@ const user = {
    },
    delete:async(ctx)=>{
 
+        await validutil.validate(ctx,rules.id,"params");
         const ModelUser = ctx.orm().user;
         let user = await ModelUser.findOne({where: { id: parseInt( ctx.params.id ) }});
 
@@ -94,6 +97,9 @@ const user = {
         }
    },
    detail:async(ctx)=>{
+
+        await validutil.validate(ctx,rules.id,"params");
+        await User.validpropety(ctx);
         const ModelUser = ctx.orm().user;
         let user = await ModelUser.findOne({
             attributes: ['id','name','birthday'],
@@ -103,7 +109,10 @@ const user = {
         if(user){
 
             ctx.status = 200;
-            ctx.body=user;
+            ctx.body={
+                success:true,
+                user:user
+            };
             
         }else{
             ctx.throw(400,'User dont exist');
@@ -119,11 +128,14 @@ const user = {
 
         if(users){
             ctx.status = 200;
-            ctx.body=users;
+            ctx.body=ctx.body={
+                success:true,
+                user:users
+            };
         }else{
             ctx.throw(400,'User dont exist');
         }  
    }
 }
 
-export default user;
+export default User;

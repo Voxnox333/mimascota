@@ -7,7 +7,7 @@ const auth = {
     authorized:async(ctx)=>{
 
         // Validate
-        await validutil.validate(ctx,rules.login);
+        await validutil.validate(ctx,rules.login,"body");
         
         // Login
         const data = ctx.request.body;

@@ -1,7 +1,12 @@
 
 const util = {
-    validate:async(ctx,rules)=>{
-        ctx.checkBody(rules);
+    validate:async(ctx,rules,type)=>{
+        if(type=='params'){
+            ctx.checkParams(rules);
+        }else{
+            ctx.checkBody(rules);
+        }
+
         let errors = await ctx.validationErrors();
         if (errors) {
             const err = { 

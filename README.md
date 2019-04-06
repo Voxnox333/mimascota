@@ -97,3 +97,120 @@ Response
     }
 }
 ```
+
+## Create User
+
+**POST**  {{base}}/users/
+
+Request
+
+```
+{
+  "name":"Chuck",
+  "email":"chuck3@mail.com",
+  "birthday":"1991-06-29"
+}
+```
+
+Response 
+```
+{
+    "success": true
+}
+```
+
+## Update User
+
+**PUT**  {{base}}/users/{ID}
+
+Only users can edit their data
+
+Request
+
+```
+{
+  "name":"Chuck",
+  "email":"chuck3@mail.com",
+  "birthday":"1991-06-29"
+}
+```
+
+Response 
+```
+{
+    "success": true,
+    "user": {
+        "name":"Chuck",
+        "email":"chuck3@mail.com",
+        "birthday":"1991-06-29"
+    }
+}
+```
+
+## Delete User
+
+**DELETE**  {{base}}/users/{ID}
+
+Response 
+```
+{
+    "success": true,
+    "message": "The user was deleted"
+}
+```
+
+## Detail User
+
+**GET**  {{base}}/users/{ID}
+Only users can view their data
+
+Response 
+```
+{
+    success:"true",
+    "user":{
+      "id": 17,
+      "name": "Chuck",
+      "birthday": "1991-06-29T00:00:00.000Z"
+    }
+}
+```
+
+## Lista ALL User
+
+**GET**  {{base}}/users
+
+Response 
+```
+{
+    "success": true,
+    "user": [
+        {
+            "id": 1,
+            "name": "Chuck",
+            "email": "chuck@mail.com",
+            "birthday": "1980-07-20T06:00:00.000Z",
+            "createdAt": "2019-04-06T01:34:14.000Z",
+            "updatedAt": "2019-04-06T01:34:14.000Z"
+        }
+    ]
+}
+```
+
+
+### Error Format
+
+Response 
+```
+{
+    "success": "false",
+    "message": "The fields are invalid",
+    "validates": [
+        {
+            "param": "id",
+            "msg": "Can not have more than 11 digits",
+            "value": "11234567890007"
+        }
+    ]
+}
+```

@@ -1,6 +1,19 @@
 // Validators User
 
 const rules = {
+    id:{
+        'id': {
+            notEmpty: true,
+            isInt: {
+                errorMessage: 'ID should be a number integer'
+            },
+            isLength: {
+                options: [{max: 11 }],
+                errorMessage: 'Can not have more than 11 digits' 
+            },
+            errorMessage: 'ID is required'
+        }
+    },
     user:{
         'email': {
             notEmpty: true,
