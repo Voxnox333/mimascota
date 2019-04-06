@@ -11,22 +11,16 @@ const user = {
        
         const data = ctx.request.body;
         const ModelUser = ctx.orm().user;
-        let exist = await ModelUser.findOne({
-            where: { email : data.email }
-        });
-
-        if (exist){
-            ctx.throw(400,'Duplicate email '+ data.email);
-        }
-
+        
         try {
             await ModelUser.create({
                 name: data.name,
                 email: data.email,
                 birthday: data.birthday
             });
-        }catch(err){
-            ctx.throw(500,'Cannot create User');
+        }catch(e){
+            if (e.errors instanceof Array && e.errors[0])  ctx.throw(400,e.errors[0].message);
+            ctx.throw(400,"Cannot save User");
         }
 
         ctx.status = 200;
@@ -38,7 +32,29 @@ const user = {
 
    update:async(ctx)=>{
 
-   }
+    // Validate
+    await validutil.validate(ctx,rules.user);
+   
+    const data = ctx.request.body;
+    const ModelUser = ctx.orm().user;
+
+    try {
+        await ModelUser.create({
+            name: data.name,
+            email: data.email,
+            birthday: data.birthday
+        });
+    }catch(err){
+        console.log(err);
+        ctx.throw(500,'Cannot create User');
+    }
+
+    ctx.status = 200;
+    ctx.body={
+        success:true
+    };
+    
+}
 }
 
 export default user;
