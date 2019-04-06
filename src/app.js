@@ -3,10 +3,12 @@ import Koa from 'koa';
 import logger from 'koa-logger';
 import bodyParser from 'koa-bodyparser';
 import koaValidator from 'koa-async-validator';
+import validconfig from './config/validations';
 import config from './config';
 import router from './router';
 import db from './middleware/database';
 import json from 'koa-json';
+
 
 console.info(`ROOT_PATH: ${config.ROOT_PATH}`);
 
@@ -18,7 +20,7 @@ app.use(db);
 // rest logger
 app.use(logger());
 app.use(bodyParser());
-app.use(koaValidator());
+app.use(koaValidator(validconfig));
 app.use(json())
 
 // x-response-time
@@ -36,7 +38,13 @@ app.use(async (ctx, next)=> {
   } catch (err) {
     ctx.status = err.status || 500;
     ctx.type = 'json';
-    ctx.body ={message:err.message};
+    let msg = err.message;
+    try {
+      msg = JSON.parse(msg);
+    } catch (e) {
+      msg = {message : err.message};
+    }
+    ctx.body = msg;   
   }
 });
 

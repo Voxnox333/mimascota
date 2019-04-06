@@ -1,35 +1,48 @@
 import jwt from 'jsonwebtoken';
+import rules from '../validators/auth';
+import validutil from '../validators/util';
+import config from '../config';
 
 const auth = {
-    session: ()=>{
-        let token = req.headers['x-access-token'] || req.headers['authorization']; // Express headers are auto converted to lowercase
-        if (token.startsWith('Bearer ')) {
-          // Remove Bearer from string
-          token = token.slice(7, token.length);
-        }
-      
-        if (token) {
-          jwt.verify(token, config.secret, (err, decoded) => {
-            if (err) {
-              return res.json({
-                success: false,
-                message: 'Token is not valid'
-              });
-            } else {
-              req.decoded = decoded;
-              next();
+    authorized:async(ctx)=>{
+
+        // Validate
+        await validutil.validate(ctx,rules.login);
+        
+        // Login
+        const data = ctx.request.body;
+        const User = ctx.orm().user;
+        const user = await User.findOne({
+            where: { email : data.email }
+        });
+
+        if(user){
+
+            if (user.name===data.name){
+
+                let payload = {
+                    id:user.id,
+                    name:user.name,
+                    email:user.email
+                };
+
+                let token = jwt.sign(payload,config.secret,{ expiresIn: config.tokenexpire });
+                ctx.status = 200;
+                ctx.body={
+                    success:true,
+                    token:token,
+                    user: payload
+                };
+
+            }else{
+                ctx.throw(401, 'The name is invalid');
             }
-          });
-        } else {
-          return res.json({
-            success: false,
-            message: 'Auth token is not supplied'
-          });
+        
+        }else{
+            ctx.throw(401, 'The email is invalid');
         }
-    },
-    authorized:()=>{
 
     }
 }
 
-export default () => auth;
+export default auth;
