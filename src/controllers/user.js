@@ -4,7 +4,7 @@ import validutil from '../validators/util';
 const User = {
     validpropety:(ctx)=>{
         if(ctx.state.user.id != ctx.params.id){
-            //ctx.throw(400,"You dont have access to this user");
+            ctx.throw(400,"You dont have access to this user");
         }
     },
    create:async(ctx)=>{
