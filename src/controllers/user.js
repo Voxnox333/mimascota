@@ -1,6 +1,5 @@
 import rules from '../validators/user';
 import validutil from '../validators/util';
-import moment from 'moment';
 
 const user = {
 
@@ -95,10 +94,35 @@ const user = {
         }
    },
    detail:async(ctx)=>{
+        const ModelUser = ctx.orm().user;
+        let user = await ModelUser.findOne({
+            attributes: ['id','name','birthday'],
+            where: { id: parseInt( ctx.params.id )}
+        });
 
+        if(user){
+
+            ctx.status = 200;
+            ctx.body=user;
+            
+        }else{
+            ctx.throw(400,'User dont exist');
+        }        
    },
    listall:async(ctx)=>{
+        const ModelUser = ctx.orm().user;
+        let users = await ModelUser.findAll({
+            order: [
+                ['id', 'ASC']
+            ]
+        });
 
+        if(users){
+            ctx.status = 200;
+            ctx.body=users;
+        }else{
+            ctx.throw(400,'User dont exist');
+        }  
    }
 }
 
