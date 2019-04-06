@@ -11,6 +11,9 @@ router.use([Auth.session,Auth.isauthorized]);
 
 router.post('/',UserCtrl.create);
 router.put('/:id/',UserCtrl.update);
+router.del('/:id/',UserCtrl.delete);
+router.get('/',UserCtrl.listall);
+router.get('/:id/',UserCtrl.detail);
 
 // User router
 const routes = router.routes();
